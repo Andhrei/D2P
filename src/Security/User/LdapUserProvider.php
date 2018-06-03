@@ -57,8 +57,6 @@ class LdapUserProvider implements UserProviderInterface
                 $user = $user[0];
             }
 
-            dump($user);
-
             return $user;
         }
 

@@ -6,6 +6,7 @@
         {% block stylesheets %}
         <link rel="stylesheet" href="{{  asset('build/main.css') }}">
         {% endblock %}
+        <link rel="icon" type="image/png" href="{{  asset('images/microfocus.png') }}">
     </head>
     <body>
 
@@ -59,8 +60,9 @@
             </nav>
         </header>
         {% endblock %}
-
-        {% block body %}{% endblock %}
+        <div id="content">
+            {% block body %}{% endblock %}
+        </div>
         {% block javascripts %}
             <script src="{{ asset('build/app.js') }}"></script>
             <script src="{{ asset('build/bootstrap.js') }}"></script>

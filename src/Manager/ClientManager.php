@@ -15,6 +15,7 @@ use App\Repository\ClientRepository;
 use App\Repository\LdapUserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Ldap\Entry;
 use Symfony\Component\Process\Process;
 
@@ -33,9 +34,32 @@ class ClientManager extends BaseManager
         // TODO: Implement filterBy() method.
     }
 
-    public function updateClientList()
+    public function addClientFor(Client $client, LdapUser $user)
     {
-//        $process = new Process('');
-    }
+        $result= $this->findOneBy(['hostname' => $client->getHostname() ]);
+        if ($result) {
+            $client = $result;
+            $client->addUser($user);
+        } else {
+            $file = '../clientInfiles/'.$client->getHostname();
+            $filesystem = new Filesystem();
+            $filesystem->touch($file);
+            $filesystem->dumpFile($file,'-host '.$client->getHostname().' -da A.10.03 -push_inst "C:\Program Files\OmniBack\" "C:\ProgramData\OmniBack\" "Administrator" "P@ssword1234" "dataprotector.datacenter.local" 2 1');
+
+            $process = new Process("ob2install -server dataprotector.datacenter.local -input $file");
+            $process->start();
+//            $process->run(function ($type, $buffer) {
+//                if (Process::ERR === $type) {
+//                    dump('ERR > '.$buffer);
+//                } else {
+//                    dump( 'OUT > '.$buffer);
+//                }
+//            });
+            
+            $client->addUser($user);
+}
+
+//        $this->save($client);
+}
 
 }

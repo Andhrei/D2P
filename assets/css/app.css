@@ -1,0 +1,16 @@
+#content {
+    position: absolute;
+}
+
+.form-content {
+    margin: auto;
+    padding: 50px;
+}
+
+.form-input {
+    border: none;
+    border-bottom: 1px solid gray;
+
+    width:400px;
+    margin: 10px;
+}
