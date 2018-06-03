@@ -1,14 +1,33 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     providers:
-        in_memory: { memory: ~ }
+        in_memory:
+            memory:
+                users:
+                    user: { password: userpass, roles: [ 'ROLE_USER' ]}
+                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ]}
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: true
 
+        main:
+            pattern: ^/
+            anonymous: true
+            form_login:
+                login_path: portal_login
+                check_path: portal_login_check
+            logout:
+                path: portal_logout
+                target: portal_login
             # activate different ways to authenticate
 
             # http_basic: true
