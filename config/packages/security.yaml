@@ -1,13 +1,56 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+        App\Entity\User: plaintext
+
     providers:
-        in_memory: { memory: ~ }
+        db_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+                # if you're using multiple entity managers
+                # manager_name: customer
+#
+#        my_ldap:
+#            ldap:
+#                service: Symfony\Component\Ldap\Ldap
+#                base_dn: 'cn=Users,dc=datacenter,dc=local'
+#                search_dn: 'cn=Administrator,dc=datacenter,dc=local'
+#                search_password: 'P@ssword1234'
+#                default_roles: ROLE_USER
+#                uid_key: uid
+
+        in_memory:
+            memory:
+                users:
+                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+#        dev:
+#            pattern: ^/(_(profiler|wdt)|css|images|js)/
+#            security: false
         main:
+            pattern: ^/
             anonymous: true
+            provider: db_provider
+            form_login:
+#                provider: in_memory
+                login_path: portal_login
+                check_path: portal_login_check
+
+            logout:
+                path: portal_logout
+                target: portal_login
+
+#            form_login_ldap:
+#                provider: my_ldap
+#                login_path: portal_login
+#                check_path: portal_login
+#                service: Symfony\Component\Ldap\Ldap
+#                dn_string: 'uid={username},dc=datacenter,dc=local'
 
             # activate different ways to authenticate
 
@@ -17,8 +60,15 @@ security:
             # form_login: true
             # https://symfony.com/doc/current/security/form_login_setup.html
 
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+#        - { path: ^/d2p/login,  roles: IS_AUTHENTICATED_ANONYMOUSLY}
+#        - { path: ^/d2p,        roles: ROLE_USER}
+
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

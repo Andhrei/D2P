@@ -16,7 +16,7 @@ class PortalController extends BaseController
 {
     public function index()
     {
-        $content = $this->render('base.html.twig');
+        $content = $this->renderView('base.html.twig');
 
         return new Response($content);
     }

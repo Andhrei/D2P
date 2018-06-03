@@ -1,17 +1,54 @@
-php<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Data Protection Portal{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+        <link rel="stylesheet" href="{{  asset('build/main.css') }}">
+        {% endblock %}
     </head>
     <body>
-        <header>
 
+        {% block header %}
+
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <a class="navbar-brand" href="{{ path('portal_home') }}">D2P</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">
+                                Schedule
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                Backup
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                Restore
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <button type="button" class="btn btn-outline-light">Logout</button>
+            </nav>
         </header>
+        {% endblock %}
 
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script src="{{ asset('build/app.js') }}"></script>
+            <script src="{{ asset('build/bootstrap.js') }}"></script>
+        {% endblock %}
 
         <footer>
 
