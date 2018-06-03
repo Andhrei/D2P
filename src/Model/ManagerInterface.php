@@ -11,7 +11,6 @@ interface ManagerInterface
     public function setEntityManager(EntityManager $em);
     public function setEntityClass($class);
     public function getEntityClass();
-    public function setServiceName($name);
     /**
      * @return \Doctrine\ORM\EntityRepository
      */

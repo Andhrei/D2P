@@ -3,17 +3,20 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Ldap\Ldap;
+use Symfony\Component\Ldap\Entry;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\LdapUserRepository")
  * @UniqueEntity(fields="id", message="Id already taken")
  * @UniqueEntity(fields="username", message="username already taken")
  * @UniqueEntity(fields="email", message="email already taken")
  */
-class User implements UserInterface, \Serializable
+class LdapUser implements UserInterface, EquatableInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -62,8 +65,16 @@ class User implements UserInterface, \Serializable
      */
     private $salt;
 
-    public function __construct()
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $displayName;
+
+    public function __construct(Entry $entry)
     {
+        $this->username = $entry->getAttribute('sAMAccountName')[0];
+        $this->displayName = $entry->getAttribute('displayName')[0];
+
         $this->setIsActive(true);
     }
 
@@ -74,7 +85,7 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
+        return array('ROLE_USER');
     }
 
     public function getSalt()
@@ -173,6 +184,53 @@ class User implements UserInterface, \Serializable
     public function setRoles(?array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * The equality comparison should neither be done by referential equality
+     * nor by comparing identities (i.e. getId() === getId()).
+     *
+     * However, you do not need to compare every attribute, but only those that
+     * are relevant for assessing whether re-authentication is required.
+     *
+     * @param UserInterface $user
+     * @return bool
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        if(!$user instanceof LdapUser)
+        {
+            return false;
+        }
+
+        if ($this->password !== $user->getPassword())
+        {
+            return false;
+        }
+
+        if ($this->salt !== $user->getSalt())
+        {
+            return false;
+        }
+
+        if ($this->username !== $user->getUsername())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    public function setDisplayName(?string $displayName): self
+    {
+        $this->displayName = $displayName;
 
         return $this;
     }

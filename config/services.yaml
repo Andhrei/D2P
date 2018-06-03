@@ -2,6 +2,12 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    ldap_host: 'dns.datacenter.local'
+    ldap_port: 389
+    ldap_protocol_version: 3
+    ldap_base_dn: 'CN=Users,DC=datacenter,DC=local'
+    ldap_search_dn: 'CN=Administrator,CN=Users,DC=datacenter,DC=local'
+    ldap_search_password: 'P@ssword1234'
 
 services:
     # default configuration for services in *this* file
@@ -24,15 +30,18 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+
+
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-#    Symfony\Component\Ldap\Ldap:
-#        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
-#    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
-#        arguments:
-#            -    host: dns.datacenter.local
-#                 port: 389
-#                 options:
-#                     protocol_version: 3
-#                     referrals: false
+    Symfony\Component\Ldap\Ldap:
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        arguments:
+            -    host: dns.datacenter.local
+                 port: 389
+                 options:
+                     protocol_version: 3
+                     referrals: false

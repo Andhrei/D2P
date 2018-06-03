@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\Common\Persistence\Proxy;
 use Doctrine\DBAL\LockMode;
@@ -11,17 +12,17 @@ use App\Model\ManagerInterface;
 
 /**
  * Class BaseManager
- * @package Publicis\Bundle\CoreBundle\Manager
+ * @package App\Manager
  */
 abstract class BaseManager implements ManagerInterface
 {
     /** @var  EntityManager $em */
     protected $em;
 
+    protected $repo;
+
     /** @var */
     protected $class;
-    /** @var */
-    protected $serviceName;
 
     /**
      * @param EntityManager $em
@@ -39,13 +40,6 @@ abstract class BaseManager implements ManagerInterface
         return $this->em;
     }
 
-    /**
-     * @param $name
-     */
-    public function setServiceName($name)
-    {
-        $this->serviceName = $name;
-    }
 
     /**
      * @param $class

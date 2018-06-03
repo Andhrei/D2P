@@ -6,8 +6,8 @@ portal_login:
     path: /login
     controller: 'App\Controller\SecurityController::login'
 
-#portal_login_check:
-#    path: /login_check
+portal_login_check:
+    path: /login_check
 
 portal_logout:
     path: /logout

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Administrator
+ * LdapUser: Administrator
  * Date: 5/31/2018
  * Time: 3:26 PM
  */
@@ -16,7 +16,10 @@ class PortalController extends BaseController
 {
     public function index()
     {
-        $content = $this->renderView('base.html.twig');
+        $user = $this->getUser();
+        $content = $this->renderView('home.html.twig', [
+            'user' => $user
+        ]);
 
         return new Response($content);
     }

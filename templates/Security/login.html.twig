@@ -17,7 +17,7 @@
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form action="{{ path('portal_login') }}" method="post">
+    <form action="{{ path('portal_login_check') }}" method="post">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" class="form-control" id="username" name="_username" placeholder="Enter username" value="{{ last_username }}">

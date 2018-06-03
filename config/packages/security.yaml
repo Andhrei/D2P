@@ -2,31 +2,34 @@ security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
 
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
-        App\Entity\User: plaintext
+#        Symfony\Component\Security\Core\User\User: plaintext
+        App\Entity\LdapUser:
+            algorithm: bcrypt
 
     providers:
-        db_provider:
-            entity:
-                class: App\Entity\User
-                property: username
-                # if you're using multiple entity managers
-                # manager_name: customer
-#
+#        db_provider:
+#            entity:
+#                class: App\Entity\User
+#                property: username
+#                # if you're using multiple entity managers
+#                # manager_name: customer
+
+        ldap_user_provider:
+            id: App\Security\User\LdapUserProvider
+
 #        my_ldap:
 #            ldap:
 #                service: Symfony\Component\Ldap\Ldap
-#                base_dn: 'cn=Users,dc=datacenter,dc=local'
-#                search_dn: 'cn=Administrator,dc=datacenter,dc=local'
+#                base_dn: 'CN=Users,DC=datacenter,DC=local'
+#                search_dn: 'CN=Administrator,CN=Users,DC=datacenter,DC=local'
 #                search_password: 'P@ssword1234'
 #                default_roles: ROLE_USER
-#                uid_key: uid
-
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+#
+#        in_memory:
+#            memory:
+#                users:
+#                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+#                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
 
     firewalls:
 #        dev:
@@ -35,22 +38,22 @@ security:
         main:
             pattern: ^/
             anonymous: true
-            provider: db_provider
-            form_login:
-#                provider: in_memory
-                login_path: portal_login
-                check_path: portal_login_check
+            provider: ldap_user_provider
+#            form_login:
+#                login_path: portal_login
+#                check_path: portal_login_check
 
             logout:
                 path: portal_logout
                 target: portal_login
 
-#            form_login_ldap:
-#                provider: my_ldap
-#                login_path: portal_login
-#                check_path: portal_login
-#                service: Symfony\Component\Ldap\Ldap
-#                dn_string: 'uid={username},dc=datacenter,dc=local'
+            form_login_ldap:
+                login_path: portal_login
+                check_path: portal_login_check
+                default_target_path: portal_home
+                service: Symfony\Component\Ldap\Ldap
+                dn_string: 'DATACENTER\{username}'
+
 
             # activate different ways to authenticate
 
@@ -67,8 +70,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-#        - { path: ^/d2p/login,  roles: IS_AUTHENTICATED_ANONYMOUSLY}
-#        - { path: ^/d2p,        roles: ROLE_USER}
+        - { path: ^/d2p/login,  roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/d2p,        roles: ROLE_USER}
 
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
