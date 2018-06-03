@@ -33,7 +33,7 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $password;
 
@@ -43,12 +43,6 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
      * @Assert\Email()
      */
     private $email;
-
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=4096)
-     */
-    private $plainPassword;
 
     /**
      * @ORM\Column(type="boolean")
@@ -61,7 +55,7 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
     private $roles;
 
     /**
-     * @ORM\Column(name="salt", type="string", length=255)
+     * @ORM\Column(name="salt", type="string", length=255, nullable=true)
      */
     private $salt;
 
@@ -75,6 +69,8 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
         $this->username = $entry->getAttribute('sAMAccountName')[0];
         $this->displayName = $entry->getAttribute('displayName')[0];
 
+//        $this->password = '...';
+//        $this->salt = '...';
         $this->setIsActive(true);
     }
 
@@ -96,18 +92,16 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
     public function serialize()
     {
         return serialize(array(
-            $this->id,
+            $this->displayName,
             $this->username,
-            $this->password
         ));
     }
 
     public function unserialize($serialized)
     {
         list(
-            $this->id,
+            $this->displayName,
             $this->username,
-            $this->password
             ) = unserialize($serialized, ['allowed_classes' => false]);
     }
 
@@ -163,22 +157,6 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
         $this->isActive = $isActive;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param mixed $plainPassword
-     */
-    public function setPlainPassword($plainPassword): void
-    {
-        $this->plainPassword = $plainPassword;
     }
 
     public function setRoles(?array $roles): self

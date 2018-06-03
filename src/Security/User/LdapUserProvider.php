@@ -44,21 +44,20 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-
-        dump("AUTH OK $username");
         $entry = $this->service->getLdapUser($username);
 
         if($entry) {
-
-            dump("ENTRYFOUND");
-            $user = $this->manager->findBy(['username' => $username]);
-
+            $user = $this->manager->findBy(['username' => $entry->getAttribute('sAMAccountName')[0]]);
 
             if(!$user)
             {
-                dump("CREATION OF NEW LDAPUSER");
-//                $user = $this->manager->createFromEntry($entry);
+//                $user = new LdapUser($entry);
+                $user = $this->manager->createFromEntry($entry);
+            } else {
+                $user = $user[0];
             }
+
+            dump($user);
 
             return $user;
         }
