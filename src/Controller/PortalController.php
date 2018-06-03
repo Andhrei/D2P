@@ -8,18 +8,18 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
 
 
 class PortalController extends BaseController
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = $this->getUser();
-        $content = $this->renderView('home.html.twig', [
-            'user' => $user
-        ]);
+        $username = $this->getUser()->getDisplayName() ? $this->getUser()->getDisplayName() : $this->getUser()->getUsername();
+        $request->getSession()->set('userName', $username);
+        $content = $this->renderView('home.html.twig');
 
         return new Response($content);
     }

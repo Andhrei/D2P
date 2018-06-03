@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Ldap\Ldap;
 use Symfony\Component\Ldap\Entry;
@@ -64,6 +66,11 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
      */
     private $displayName;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Client", mappedBy="Users")
+     */
+    private $clients;
+
     public function __construct(Entry $entry)
     {
         $this->username = $entry->getAttribute('sAMAccountName')[0];
@@ -72,6 +79,7 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
 //        $this->password = '...';
 //        $this->salt = '...';
         $this->setIsActive(true);
+$this->clients = new ArrayCollection();
     }
 
     public function eraseCredentials()
@@ -209,6 +217,34 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
     public function setDisplayName(?string $displayName): self
     {
         $this->displayName = $displayName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Client[]
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): self
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients[] = $client;
+            $client->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): self
+    {
+        if ($this->clients->contains($client)) {
+            $this->clients->removeElement($client);
+            $client->removeUser($this);
+        }
 
         return $this;
     }

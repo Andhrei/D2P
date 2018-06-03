@@ -11,3 +11,10 @@ portal_login_check:
 
 portal_logout:
     path: /logout
+
+
+# Clients
+
+portal_client_new:
+    path: /client/new
+    controller: 'App\Controller\ClientController::new'

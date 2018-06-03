@@ -1,0 +1,67 @@
+#login-content {
+}
+
+#login-alert{
+    position: absolute;
+    z-index: 1000;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 10px;
+}
+
+.login-input {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid black;
+}
+
+.product-name {
+    font-weight: bold;
+    font-size: 48px;
+    color: black;
+    margin: auto;
+}
+
+#dp-image {
+    background-image: url("../images/DP.png");
+    height: 168px;
+    width: 168px;
+    position: absolute;
+    top:-168px;
+    left: -100px;
+    z-index: 3;
+}
+
+#pluses-image {
+    background-image: url("../images/pluses.png");
+    height: 257px;
+    width: 221px;
+    position: absolute;
+    top:-100px;
+    left: -222px;
+    z-index: 2;
+}
+
+#login-panel {
+    position: relative;
+    z-index: 4;
+
+    left: -68px;
+    width: 500px;
+    border-radius: 1px;
+    padding: 20px;
+    top: 300px;
+    box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.2);
+
+    background-color: white;
+}
+
+#image-div {
+    background-image: url("../images/background.png");
+    height: 950px;
+    width: 1138px;
+    position: absolute;
+    top:0;
+    right:0;
+    z-index: 1;
+}

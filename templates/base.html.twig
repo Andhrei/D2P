@@ -22,8 +22,13 @@
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
                             <a class="nav-link" href="#">
-                                Schedule
+                                Home
                                 <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                Schedule
                             </a>
                         </li>
                         <li class="nav-item">
@@ -39,9 +44,18 @@
                     </ul>
                 </div>
 
-                <button type="button" class="btn btn-outline-light" >
-
-                    <a class="navbar-brand" href="{{ path('portal_logout') }}">Logout</a></button>
+                <div id="welcomeUser" class="navbar" >
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                                <div style="color: white">
+                                    Welcome {{ app.session.get('userName') }}
+                                </div>
+                        </li>
+                    </ul>
+                </div>
+                <a  class="btn btn-outline-light" href="{{ path('portal_logout') }}">
+                    Logout
+                </a>
             </nav>
         </header>
         {% endblock %}
