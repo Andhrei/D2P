@@ -15,6 +15,10 @@ portal_logout:
 
 # Clients
 
+portal_clients:
+    path: /clients
+    controller: 'App\Controller\ClientController::list'
+
 portal_client_new:
     path: /client/new
     controller: 'App\Controller\ClientController::new'
@@ -30,3 +34,7 @@ portal_schedule_new:
 portal_backup:
     path: /backup
     controller: 'App\Controller\DatalistController::backup'
+
+portal_azure_backup:
+    path: /backup/{id}
+    controller: 'App\Controller\DatalistController::backupAzure'

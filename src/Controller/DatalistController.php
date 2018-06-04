@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Datalist;
 use App\Form\DatalistType;
+use App\Manager\ClientManager;
 use App\Manager\DatalistManager;
+use App\Manager\DeviceManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -12,10 +14,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DatalistController extends Controller
 {
     private $datalistManager;
+    private $clientManager;
+    private $deviceManager;
 
-    public function __construct(DatalistManager $dManager)
+    public function __construct(DatalistManager $dManager, ClientManager $clientManager, DeviceManager $deviceManager)
     {
         $this->datalistManager = $dManager;
+        $this->clientManager = $clientManager;
+        $this->deviceManager  = $deviceManager;
+    }
+
+    public function backupDatalist(Request $request, $id) {
+        $datalist = $this->datalistManager->find($id);
+        $this->datalistManager->backup($datalist);
+
     }
 
     public function backup(Request $request)
@@ -47,5 +59,18 @@ class DatalistController extends Controller
             'formUrl' => 'api_post_schedule',
             'class' => 'Schedule',
         ));
+    }
+
+    public function backupAzure($id)
+    {
+        $client = $this->clientManager->find($id);
+        $user = $this->getUser();
+        $azureDevice = $user->getAzureDevice();
+
+        $datalist = $this->datalistManager->getOrCreate($client, $azureDevice, $user);
+
+        $this->datalistManager->backup($datalist);
+
+        return $this->redirectToRoute('portal_home');
     }
 }

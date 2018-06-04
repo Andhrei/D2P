@@ -13,6 +13,7 @@ use App\Entity\Client;
 use App\Entity\Datalist;
 use App\Entity\Device;
 use App\Entity\LdapUser;
+use App\Form\DatalistType;
 use App\Repository\ClientRepository;
 use App\Repository\DatalistRepository;
 use App\Repository\LdapUserRepository;
@@ -37,18 +38,37 @@ class DatalistManager extends BaseManager
         // TODO: Implement filterBy() method.
     }
 
+    public function getOrCreate(Client $client, Device $device, LdapUser $user)
+    {
+        $datalist = $this->findOneBy(array(
+            'client' => $client,
+            'device' => $device,
+            'user' => $user
+        ));
+
+        if (!$datalist) {
+            $datalist = new Datalist($client,$device,$user);
+
+            $this->save($datalist);
+        }
+
+        return $datalist;
+    }
+
     public function getDatalist(Datalist $datalist, LdapUser $user )
     {
         $result = $this->findOneBy(array (
             'device' => $datalist->getDevice(),
-            'client' => $datalist->getClient()
+            'client' => $datalist->getClient(),
+            'user' => $user
         ));
         if ($result)
         {
             return $result;
         } else {
-            $datalist->setName($datalist->getDevice()->getLibrary()."_".$datalist->getClient()->getShortName());
             $datalist->setUser($user);
+            $datalist->setType("Azure");
+            $datalist->generateName();
 
             $this->save($datalist);
 

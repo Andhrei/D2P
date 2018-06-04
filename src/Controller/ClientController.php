@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Form\DatalistType;
 use App\Manager\ClientManager;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -53,6 +54,34 @@ class ClientController extends Controller
             'formMethod' => 'POST',
             'formUrl' => 'api_post_client',
             'class' => 'Client',
+        ));
+    }
+
+    public function list(Request $request)
+    {
+        $client = new Client();
+        $clients = $this->getUser()->getClients();
+        $clientForm = $this->createFormBuilder($client)
+            ->add('name', TextType::class)
+            ->add('hostname', TextType::class)
+            ->add('save', SubmitType::class, array('label' => 'Create Client'))
+            ->getForm();
+
+        $clientForm->handleRequest($request);
+
+        if ($clientForm->isSubmitted() && $clientForm->isValid()) {
+            $client = $clientForm->getData();
+
+            $this->manager->addClientFor($client,$this->getUser());
+
+            return $this->redirectToRoute('portal_clients');
+        }
+
+        return $this->render('client/listClients.html.twig', array(
+            'form' => $clientForm->createView(),
+            'formMethod' => 'POST',
+            'class' => 'Client',
+            'clients' => $clients,
         ));
     }
 }

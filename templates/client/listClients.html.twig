@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Home{% endblock %}
+
+{% block body %}
+
+
+    <div class="accordion" id="client-accordion">
+        <div class="card">
+            <div class="card-header" id="heading-new">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-new" aria-expanded="false" aria-controls="collapse-new">
+                        Add a client
+                    </button>
+                </h5>
+            </div>
+        </div>
+
+        <div id="collapse-new" class="collapse" aria-labelledby="heading-new" data-parent="#client-accordion">
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-5 form-group">
+                        {{ form_widget(form.name, {'attr' :
+                            {
+                                'class' : 'form-input',
+                                'placeholder' : 'Name'
+                            }
+                        })
+                        }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 form-group">
+                        {{ form_widget(form.hostname, {'attr' :
+                            {
+                                'class' : 'form-input',
+                                'placeholder' : 'Hostname'
+                            }
+                        })
+                        }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        {{ form_widget(form.save, {'attr' : { 'class' : 'btn btn-primary'}}) }}
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <br><br>
+        <h2>List of clients</h2>
+        <br>
+        {% for client in clients %}
+            <div class="card">
+                <div class="card-header" id="heading-{{ client.shortName }}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ client.shortName }}" aria-expanded="false" aria-controls="collapse-{{ client.shortName }}">
+                            {{ client.name }}
+                        </button>
+                    </h5>
+                </div>
+            </div>
+
+            <div id="collapse-{{ client.shortName }}" class="collapse" aria-labelledby="heading-{{ client.shortName }}" data-parent="#client-accordion">
+                <div class="card-body">
+                    <div class="client-info">
+                        {{ client.hostname }}
+                    </div>
+                    <div class="client-buttons">
+                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Schedule
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <a class="dropdown-item" href="#">Daily</a>
+                                    <a class="dropdown-item" href="#">Weekly</a>
+                                </div>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Backup
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="{{ path('portal_azure_backup', {'id' : client.id}) }}">Azure</a>
+                                        <a class="dropdown-item" href="#">Local</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success">Restore</button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

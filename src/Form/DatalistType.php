@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Client;
 use App\Entity\Datalist;
 use App\Entity\Device;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -36,6 +37,8 @@ class DatalistType extends AbstractType
         $resolver->setDefined('devices');
         $resolver->setDefaults([
             'data_class' => Datalist::class,
+            'clients' => new ArrayCollection(),
+            'devices' => new ArrayCollection(),
         ]);
     }
 }

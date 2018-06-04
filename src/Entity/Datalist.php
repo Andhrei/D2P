@@ -39,6 +39,30 @@ class Datalist
      */
     private $device;
 
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $type;
+
+    public function __construct(Client $client = null, Device $device=null, LdapUser $user = null)
+    {
+        if ($client) {
+            $this->client = $client;
+        }
+
+        if ($device) {
+            $this->device = $device;
+        }
+
+        if ($user) {
+            $this->user = $user;
+        }
+
+        if ($client && $device) {
+            $this->generateName();
+        }
+    }
+
     public function getId()
     {
         return $this->id;
@@ -54,6 +78,11 @@ class Datalist
         $this->name = $name;
 
         return $this;
+    }
+
+    public function generateName()
+    {
+        return $this->name = $this->device->getLibrary()."_".$this->client->getShortName();
     }
 
     public function getClient(): ?Client
@@ -88,6 +117,18 @@ class Datalist
     public function setDevice(?Device $device): self
     {
         $this->device = $device;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Entity\LdapUser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
@@ -17,9 +18,16 @@ class PortalController extends BaseController
 {
     public function index(Request $request)
     {
-        $username = $this->getUser()->getDisplayName() ? $this->getUser()->getDisplayName() : $this->getUser()->getUsername();
+        $user = $this->getUser();
+
+//        Setting session username
+        $username = $user->getDisplayName() ? $user->getDisplayName() : $user->getUsername();
         $request->getSession()->set('userName', $username);
-        $content = $this->renderView('home.html.twig');
+
+
+
+        $content = $this->renderView('home.html.twig', array(
+        ));
 
         return new Response($content);
     }

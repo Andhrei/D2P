@@ -1,9 +1,9 @@
-NAME "Administrator_gw"
+NAME "Administrator_gw_az"
 DESCRIPTION ""
 HOST dataprotector.datacenter.local
 POLICY BackupToDisk
 TYPE CloudAzure
-POOL "Administrator"
+POOL "Administrator_mp"
 LIBRARY "Administrator_az"
 VERIFY
 RESTOREDEVICEPOOL YES

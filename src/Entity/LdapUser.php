@@ -314,6 +314,19 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
         return $this->devices;
     }
 
+    public function getAzureDevice()
+    {
+        foreach ($this->devices as $device)
+        {
+            if($device->getType() == "Azure")
+            {
+                return $device;
+            }
+        }
+
+        return null;
+    }
+
     public function addDevice(Device $device): self
     {
         if (!$this->devices->contains($device)) {
