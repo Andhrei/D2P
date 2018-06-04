@@ -26,12 +26,12 @@ class LdapService
             'port' => 389
         ));
 
-        $this->ldap->bind('CN=Administrator,CN=Users,DC=datacenter,DC=local', 'P@ssword1234');
+        $this->ldap->bind('CN=Administrator,CN=users,DC=datacenter,DC=local', 'P@ssword1234');
     }
 
     public function getLdapUser($username)
     {
-        $query = $this->ldap->query('CN=Users,DC=datacenter,DC=local',"(&(sAMAccountName=$username))");
+        $query = $this->ldap->query('CN=users,DC=datacenter,DC=local',"(&(sAMAccountName=$username))");
 
         $results = $query->execute()->toArray();
 

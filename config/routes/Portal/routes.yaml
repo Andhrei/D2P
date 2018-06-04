@@ -18,3 +18,9 @@ portal_logout:
 portal_client_new:
     path: /client/new
     controller: 'App\Controller\ClientController::new'
+
+# Schedules
+
+portal_schedule_new:
+    path: /schedule/new
+    controller: 'App\Controller\ScheduleController::new'

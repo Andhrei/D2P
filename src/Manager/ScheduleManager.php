@@ -10,21 +10,20 @@ namespace App\Manager;
 
 
 use App\Entity\LdapUser;
+use App\Entity\Schedule;
 use App\Repository\LdapUserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Ldap\Entry;
 
-class LdapUserManager extends BaseManager
+class ScheduleManager extends BaseManager
 {
-    private $devManager;
 
-    public function __construct(LdapUserRepository $repository, EntityManagerInterface $entityManager, DeviceManager $devManager)
+    public function __construct(LdapUserRepository $repository, EntityManagerInterface $entityManager)
     {
-        $this->class = LdapUser::class;
+        $this->class = Schedule::class;
         $this->repo = $repository;
         $this->em = $entityManager;
-        $this->devManager = $devManager;
     }
 
     public function filterBy($filters)
@@ -32,12 +31,7 @@ class LdapUserManager extends BaseManager
         // TODO: Implement filterBy() method.
     }
 
-    public function createFromEntry(Entry $entry)
+    public function addScheduleForUser(Schedule $schedule, LdapUser $user)
     {
-        $user = new LdapUser($entry);
-        $this->save($user);
-        $this->devManager->createAzureDeviceForUser($user);
-
-        return $user;
     }
 }

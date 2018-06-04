@@ -1,0 +1,10 @@
+NAME "jmartin_gw"
+DESCRIPTION ""
+HOST dataprotector.datacenter.local
+POLICY BackupToDisk
+TYPE CloudAzure
+POOL "jmartin"
+LIBRARY "jmartin_az"
+VERIFY
+RESTOREDEVICEPOOL YES
+COPYDEVICEPOOL YES

@@ -1,0 +1,10 @@
+NAME "dpservices_gw"
+DESCRIPTION ""
+HOST dataprotector.datacenter.local
+POLICY BackupToDisk
+TYPE CloudAzure
+POOL "dpservices"
+LIBRARY "dpservices_az"
+VERIFY
+RESTOREDEVICEPOOL YES
+COPYDEVICEPOOL YES

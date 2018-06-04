@@ -31,11 +31,24 @@ class Client
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\LdapUser", inversedBy="clients")
      */
-    private $Users;
+    private $users;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="client", orphanRemoval=true)
+     */
+    private $specifications;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Datalist", mappedBy="client")
+     */
+    private $datalists;
+
 
     public function __construct()
     {
-        $this->Users = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->specifications = new ArrayCollection();
+        $this->datalists = new ArrayCollection();
     }
 
     public function getId()
@@ -72,13 +85,13 @@ class Client
      */
     public function getUsers(): Collection
     {
-        return $this->Users;
+        return $this->users;
     }
 
     public function addUser(LdapUser $user): self
     {
-        if (!$this->Users->contains($user)) {
-            $this->Users[] = $user;
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
         }
 
         return $this;
@@ -86,8 +99,70 @@ class Client
 
     public function removeUser(LdapUser $user): self
     {
-        if ($this->Users->contains($user)) {
-            $this->Users->removeElement($user);
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Schedule[]
+     */
+    public function getSpecifications(): Collection
+    {
+        return $this->specifications;
+    }
+
+    public function addSpecification(Schedule $specification): self
+    {
+        if (!$this->specifications->contains($specification)) {
+            $this->specifications[] = $specification;
+            $specification->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSpecification(Schedule $specification): self
+    {
+        if ($this->specifications->contains($specification)) {
+            $this->specifications->removeElement($specification);
+            // set the owning side to null (unless already changed)
+            if ($specification->getClient() === $this) {
+                $specification->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Datalist[]
+     */
+    public function getDatalists(): Collection
+    {
+        return $this->datalists;
+    }
+
+    public function addDatalist(Datalist $datalist): self
+    {
+        if (!$this->datalists->contains($datalist)) {
+            $this->datalists[] = $datalist;
+            $datalist->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDatalist(Datalist $datalist): self
+    {
+        if ($this->datalists->contains($datalist)) {
+            $this->datalists->removeElement($datalist);
+            // set the owning side to null (unless already changed)
+            if ($datalist->getClient() === $this) {
+                $datalist->setClient(null);
+            }
         }
 
         return $this;

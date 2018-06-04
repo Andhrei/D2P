@@ -1,0 +1,8 @@
+NAME "mdubois_az"
+DESCRIPTION ""
+POLICY BackupToDisk
+TYPE CloudAzure
+DIRECTORY
+	"\azstrg1.blob.core.windows.net\dataprotector"
+CLOUDOPTIONS "BBHtdQrvI3YD5aEqnZNKY1doahdVUMKkBI1NonR7kNVsmfsUK76sxIAtlygKyCNvgzNzwCV6HuLLVTTt+e8jsR4MuQGkWUNdBM7UFN1vJwO5sh8j7qwFb9g1gSmHiql4FD8JzGogvMf7OfgFM6gvL5azrS5BFrkve/0C5ypJNW1s19dH/RvWmD9DeLIhWzI1hqWczXpkdE28ZdSjs7wAh7HgBmMCQoC+gRC6qGhYfgAZXXrFseb/fhzTnrKDCzSu9LSVbfujQHt24tEVwN5ZkZn8AC5UsA+7CXDpCEtJ9x+E/YvxsE0zwMQekN15sI67n7shNPhKhDBTkw=="
+MGMTCONSOLEURL "https://portal.azure.com"

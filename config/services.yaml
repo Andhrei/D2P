@@ -5,8 +5,8 @@ parameters:
     ldap_host: 'dns.datacenter.local'
     ldap_port: 389
     ldap_protocol_version: 3
-    ldap_base_dn: 'CN=Users,DC=datacenter,DC=local'
-    ldap_search_dn: 'CN=Administrator,CN=Users,DC=datacenter,DC=local'
+    ldap_base_dn: 'CN=users,DC=datacenter,DC=local'
+    ldap_search_dn: 'CN=Administrator,CN=users,DC=datacenter,DC=local'
     ldap_search_password: 'P@ssword1234'
 
 services:

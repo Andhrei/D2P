@@ -20,8 +20,8 @@ security:
 #        my_ldap:
 #            ldap:
 #                service: Symfony\Component\Ldap\Ldap
-#                base_dn: 'CN=Users,DC=datacenter,DC=local'
-#                search_dn: 'CN=Administrator,CN=Users,DC=datacenter,DC=local'
+#                base_dn: 'CN=users,DC=datacenter,DC=local'
+#                search_dn: 'CN=Administrator,CN=users,DC=datacenter,DC=local'
 #                search_password: 'P@ssword1234'
 #                default_roles: ROLE_USER
 #

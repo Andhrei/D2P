@@ -67,9 +67,24 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
     private $displayName;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Client", mappedBy="Users")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Client", mappedBy="users")
      */
     private $clients;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="user", orphanRemoval=true)
+     */
+    private $schedules;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Device", mappedBy="user")
+     */
+    private $devices;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Datalist", mappedBy="user")
+     */
+    private $datalists;
 
     public function __construct(Entry $entry)
     {
@@ -79,7 +94,10 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
 //        $this->password = '...';
 //        $this->salt = '...';
         $this->setIsActive(true);
-$this->clients = new ArrayCollection();
+        $this->clients = new ArrayCollection();
+        $this->schedules = new ArrayCollection();
+        $this->devices = new ArrayCollection();
+        $this->datalists = new ArrayCollection();
     }
 
     public function eraseCredentials()
@@ -244,6 +262,107 @@ $this->clients = new ArrayCollection();
         if ($this->clients->contains($client)) {
             $this->clients->removeElement($client);
             $client->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Backup[]
+     */
+    public function getBackups(): Collection
+    {
+        return $this->backups;
+    }
+
+    /**
+     * @return Collection|Schedule[]
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
+    }
+
+    public function addSpecification(Schedule $specification): self
+    {
+        if (!$this->schedules->contains($specification)) {
+            $this->schedules[] = $specification;
+            $specification->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSpecification(Schedule $specification): self
+    {
+        if ($this->schedules->contains($specification)) {
+            $this->schedules->removeElement($specification);
+            // set the owning side to null (unless already changed)
+            if ($specification->getUser() === $this) {
+                $specification->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Device[]
+     */
+    public function getDevices(): Collection
+    {
+        return $this->devices;
+    }
+
+    public function addDevice(Device $device): self
+    {
+        if (!$this->devices->contains($device)) {
+            $this->devices[] = $device;
+            $device->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevice(Device $device): self
+    {
+        if ($this->devices->contains($device)) {
+            $this->devices->removeElement($device);
+            // set the owning side to null (unless already changed)
+            if ($device->getUser() === $this) {
+                $device->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Datalist[]
+     */
+    public function getDatalists(): Collection
+    {
+        return $this->datalists;
+    }
+
+    public function addDatalist(Datalist $datalist): self
+    {
+        if (!$this->datalists->contains($datalist)) {
+            $this->datalists[] = $datalist;
+            $datalist->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDatalist(Datalist $datalist): self
+    {
+        if ($this->datalists->contains($datalist)) {
+            $this->datalists->removeElement($datalist);
+            // set the owning side to null (unless already changed)
+            if ($datalist->getUser() === $this) {
+                $datalist->setUser(null);
+            }
         }
 
         return $this;

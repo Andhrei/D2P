@@ -47,6 +47,7 @@ class ClientManager extends BaseManager
             $filesystem->dumpFile($file,'-host '.$client->getHostname().' -da A.10.03 -push_inst "C:\Program Files\OmniBack\" "C:\ProgramData\OmniBack\" "Administrator" "P@ssword1234" "dataprotector.datacenter.local" 2 1');
 
             $process = new Process("ob2install -server dataprotector.datacenter.local -input $file");
+//            $process = new Process("omnicellinfo -cell");
             $process->start();
 //            $process->run(function ($type, $buffer) {
 //                if (Process::ERR === $type) {
@@ -55,11 +56,11 @@ class ClientManager extends BaseManager
 //                    dump( 'OUT > '.$buffer);
 //                }
 //            });
-            
+
             $client->addUser($user);
 }
 
-//        $this->save($client);
+        $this->save($client);
 }
 
 }
