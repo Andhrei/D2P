@@ -24,3 +24,9 @@ portal_client_new:
 portal_schedule_new:
     path: /schedule/new
     controller: 'App\Controller\ScheduleController::new'
+
+# Datalists
+
+portal_backup:
+    path: /backup
+    controller: 'App\Controller\DatalistController::backup'

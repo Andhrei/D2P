@@ -38,45 +38,54 @@ class DeviceManager extends BaseManager
 
     public function createAzureDeviceForUser(LdapUser $user)
     {
+        $deviceName = $user->getUsername()."_gw_az";
+        $libraryName = $user->getUsername()."_az";
+        $mediaPool = $user->getUsername()."_mp";
+
+        $azureContainer = '\\\\azstrg1.blob.core.windows.net\d2p';
+        $cloudOption  = 'T9zxEb2ybDv86kifY0i48Gdes1JFqg4pSa2y3UZKlW3tViKrytb6XcpomiWEJaHhsX1gZ78xCxNTw8UfJCVD0uwZ5Xciy9BJtabFQmkFt6OtEluW4nXSG8ehm/E0jNz9c145bYX2O+VrGryIpfHrlMPxb5j4TSZ5J89yzqBOCVDEm2ynFif9P81jluvbSfAlMHpbzgm6r9BwMNwGeuj/xyRW1fB5azrJshW+eXOrhI3SmsUDho6NTZ3e4g+9NfB0pn8VSVXJzz7QTfWUIFEzpxEcFL5NoCao6Vqd589MLzod3y4LWT7JoWih4m10l6HedNGDqUyhZFVuFw==';
+
         $file = '../deviceInfiles/'.$user->getUsername().'_az_library';
         $filesystem = new Filesystem();
         $filesystem->touch($file);
         $filesystem->dumpFile($file,'');
-        $filesystem->appendToFile($file,'NAME "'.$user->getUsername().'_az"' . "\xA");
-        $filesystem->appendToFile($file,'DESCRIPTION ""' . "\xA");
-        $filesystem->appendToFile($file,'POLICY BackupToDisk' . "\xA");
-        $filesystem->appendToFile($file,'TYPE CloudAzure' . "\xA");
-        $filesystem->appendToFile($file,'DIRECTORY' . "\xA");
-        $filesystem->appendToFile($file,"\t".'"\\azstrg1.blob.core.windows.net\dataprotector"' . "\xA");
-        $filesystem->appendToFile($file,'CLOUDOPTIONS "BBHtdQrvI3YD5aEqnZNKY1doahdVUMKkBI1NonR7kNVsmfsUK76sxIAtlygKyCNvgzNzwCV6HuLLVTTt+e8jsR4MuQGkWUNdBM7UFN1vJwO5sh8j7qwFb9g1gSmHiql4FD8JzGogvMf7OfgFM6gvL5azrS5BFrkve/0C5ypJNW1s19dH/RvWmD9DeLIhWzI1hqWczXpkdE28ZdSjs7wAh7HgBmMCQoC+gRC6qGhYfgAZXXrFseb/fhzTnrKDCzSu9LSVbfujQHt24tEVwN5ZkZn8AC5UsA+7CXDpCEtJ9x+E/YvxsE0zwMQekN15sI67n7shNPhKhDBTkw=="' . "\xA");
-        $filesystem->appendToFile($file,'MGMTCONSOLEURL "https://portal.azure.com"' . "\xA");
+        $filesystem->appendToFile($file,"NAME \"$libraryName\"\xA");
+        $filesystem->appendToFile($file,"DESCRIPTION \"\"\xA");
+        $filesystem->appendToFile($file,"POLICY BackupToDisk\xA");
+        $filesystem->appendToFile($file,"TYPE CloudAzure\xA");
+        $filesystem->appendToFile($file,"DIRECTORY\xA");
+        $filesystem->appendToFile($file,"\t\"$azureContainer\"\xA");
+        $filesystem->appendToFile($file,"CLOUDOPTIONS \"$cloudOption\"\xA");
+        $filesystem->appendToFile($file,"MGMTCONSOLEURL \"https://portal.azure.com\"\xA");
+
 
         $process = new Process("omniupload -create_library ".$file);
         $process->run();
 
-        $process = new Process("omnimm -create_pool ".$user->getUsername()." \"Azure-Cloud\" App+Loose 0 0");
+        $process = new Process("omnimm -create_pool ".$mediaPool." \"Azure-Cloud\" App+Loose 0 0");
         $process->run();
 
         $file = '../deviceInfiles/'.$user->getUsername().'_az_device';
         $filesystem->touch($file);
         $filesystem->dumpFile($file,'');
-        $filesystem->appendToFile($file,'NAME "'.$user->getUsername().'_gw"' . "\xA");
-        $filesystem->appendToFile($file,'DESCRIPTION ""' . "\xA");
-        $filesystem->appendToFile($file,'HOST dataprotector.datacenter.local' . "\xA");
-        $filesystem->appendToFile($file,'POLICY BackupToDisk' . "\xA");
-        $filesystem->appendToFile($file,'TYPE CloudAzure' . "\xA");
-        $filesystem->appendToFile($file,'POOL "'.$user->getUsername().'"' . "\xA");
-        $filesystem->appendToFile($file,'LIBRARY "'.$user->getUsername().'_az"' . "\xA");
-        $filesystem->appendToFile($file,'VERIFY' . "\xA");
-        $filesystem->appendToFile($file,'RESTOREDEVICEPOOL YES' . "\xA");
-        $filesystem->appendToFile($file,'COPYDEVICEPOOL YES' . "\xA");
+        $filesystem->appendToFile($file,"NAME \"$deviceName\"\xA");
+        $filesystem->appendToFile($file,"DESCRIPTION \"\"\xA");
+        $filesystem->appendToFile($file,"HOST dataprotector.datacenter.local\xA");
+        $filesystem->appendToFile($file,"POLICY BackupToDisk\xA");
+        $filesystem->appendToFile($file,"TYPE CloudAzure\xA");
+        $filesystem->appendToFile($file,"POOL \"$mediaPool\"\xA");
+        $filesystem->appendToFile($file,"LIBRARY \"$libraryName\"\xA");
+        $filesystem->appendToFile($file,"VERIFY\xA");
+        $filesystem->appendToFile($file,"RESTOREDEVICEPOOL YES\xA");
+        $filesystem->appendToFile($file,"COPYDEVICEPOOL YES\xA");
+
 
         $process = new Process("omniupload -create_device ".$file);
         $process->run();
 
         $device = new Device();
-        $device->setName($user->getUsername()."_gw");
-        $device->setLibrary($user->getUsername()."_az");
+        $device->setName($deviceName);
+        $device->setLibrary($libraryName);
         $device->setType("Azure");
         $device->setUser($user);
 

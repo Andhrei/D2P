@@ -1,4 +1,4 @@
-NAME "jmartin_az"
+NAME "Administrator_az"
 DESCRIPTION ""
 POLICY BackupToDisk
 TYPE CloudAzure

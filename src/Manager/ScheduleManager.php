@@ -15,6 +15,7 @@ use App\Repository\LdapUserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Ldap\Entry;
+use Symfony\Component\Process\Process;
 
 class ScheduleManager extends BaseManager
 {
@@ -31,7 +32,12 @@ class ScheduleManager extends BaseManager
         // TODO: Implement filterBy() method.
     }
 
-    public function addScheduleForUser(Schedule $schedule, LdapUser $user)
+    public function saveSchedule(Schedule $schedule)
     {
+        $this->save($schedule);
+
+        $proc = new Process("omnidbutil -create_schedule -specType BACKUP -appType datalist -specName ".$schedule->getDatalist()->getName()." -dpName ".$schedule->getName()." -dpType incr -recurrenceType ".$schedule->getRecurrence()." -everyNth 1 -startDate ".date("Y-m-d")." -startTime 12:00");
+        $proc->run();
+
     }
 }

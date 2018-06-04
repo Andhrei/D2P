@@ -1,0 +1,1 @@
+-host contentmanager.datacenter.local -da A.10.03 -push_inst "C:\Program Files\OmniBack\" "C:\ProgramData\OmniBack\" "Administrator" "P@ssword1234" "dataprotector.datacenter.local" 2 1

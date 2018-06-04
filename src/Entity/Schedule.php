@@ -27,6 +27,11 @@ class Schedule
      */
     private $datalist;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
     public function getId()
     {
         return $this->id;
@@ -52,6 +57,18 @@ class Schedule
     public function setDatalist(Datalist $datalist): self
     {
         $this->datalist = $datalist;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

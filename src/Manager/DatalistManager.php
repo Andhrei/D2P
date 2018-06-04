@@ -39,18 +39,30 @@ class DatalistManager extends BaseManager
 
     public function getDatalist(Datalist $datalist, LdapUser $user )
     {
-        $result = $this->findBy(array (
+        $result = $this->findOneBy(array (
             'device' => $datalist->getDevice(),
             'client' => $datalist->getClient()
         ));
-        dump($result);
-        die;
-        $datalist->setName($datalist->getDevice()->getLibrary()."_".$datalist->getClient()->getShortName());
-        $datalist->setUser($user);
+        if ($result)
+        {
+            return $result;
+        } else {
+            $datalist->setName($datalist->getDevice()->getLibrary()."_".$datalist->getClient()->getShortName());
+            $datalist->setUser($user);
 
-        $this->save($datalist);
+            $this->save($datalist);
 
-        return $datalist;
+            $proc = new Process("omnicreatedl -datalist ".$datalist->getName()." -host ".$datalist->getClient()->getHostname()." -device ".$datalist->getDevice()->getName());
+            $proc->run();
+
+            return $datalist;
+        }
+    }
+
+    public function backup(Datalist $datalist) {
+        $proc = new Process("omnib -datalist ".$datalist->getName()." -mode incremental");
+        $proc->start();
+
     }
 
 }

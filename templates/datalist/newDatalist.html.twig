@@ -4,14 +4,14 @@
 
 {% block body %}
     <div class="form-content form-group">
-        <h2>Add a schedule</h2>
+        <h2>Backup a client</h2>
         <br>
         {{ form_start(form) }}
             <div class="row">
                 <div class="col-md-5 form-group">
-                    {{ form_label(form.datalist.client) }}
+                    {{ form_label(form.client) }}
                     <br>
-                    {{ form_widget(form.datalist.client, {'attr' :
+                    {{ form_widget(form.client, {'attr' :
                             {
                                 'class' : 'form-input',
                                 'placeholder' : 'Name'
@@ -22,22 +22,9 @@
             </div>
             <div class="row">
                 <div class="col-md-5 form-group">
-                    {{ form_label(form.datalist.device) }}
+                    {{ form_label(form.device) }}
                     <br>
-                    {{ form_widget(form.datalist.device, {'attr' :
-                            {
-                                'class' : 'form-input',
-                                'placeholder' : 'Name'
-                            }
-                        })
-                    }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-5 form-group">
-                    {{ form_label(form.recurrence) }}
-                    <br>
-                    {{ form_widget(form.recurrence, {'attr' :
+                    {{ form_widget(form.device, {'attr' :
                             {
                                 'class' : 'form-input',
                                 'placeholder' : 'Name'
@@ -52,6 +39,7 @@
                     {{ form_widget(form.save, {'attr' : { 'class' : 'btn btn-primary'}}) }}
                 </div>
             </div>
+        {{ form_end(form) }}
     </div>
 
     {#<div class="form-content">#}
