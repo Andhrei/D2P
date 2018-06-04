@@ -13,6 +13,7 @@ use App\Entity\Client;
 use App\Entity\Device;
 use App\Entity\LdapUser;
 use App\Repository\ClientRepository;
+use App\Repository\DeviceRepository;
 use App\Repository\LdapUserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +24,7 @@ use Symfony\Component\Process\Process;
 class DeviceManager extends BaseManager
 {
 
-    public function __construct(ClientRepository $repository, EntityManagerInterface $entityManager)
+    public function __construct(DeviceRepository $repository, EntityManagerInterface $entityManager)
     {
         $this->class = Device::class;
         $this->repo = $repository;

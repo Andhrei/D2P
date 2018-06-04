@@ -34,11 +34,6 @@ class Client
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Schedule", mappedBy="client", orphanRemoval=true)
-     */
-    private $specifications;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Datalist", mappedBy="client")
      */
     private $datalists;
@@ -47,7 +42,6 @@ class Client
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->specifications = new ArrayCollection();
         $this->datalists = new ArrayCollection();
     }
 
@@ -80,6 +74,11 @@ class Client
         return $this;
     }
 
+    public function getShortName()
+    {
+        return explode('.',$this->hostname)[0];
+    }
+
     /**
      * @return Collection|LdapUser[]
      */
@@ -101,37 +100,6 @@ class Client
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Schedule[]
-     */
-    public function getSpecifications(): Collection
-    {
-        return $this->specifications;
-    }
-
-    public function addSpecification(Schedule $specification): self
-    {
-        if (!$this->specifications->contains($specification)) {
-            $this->specifications[] = $specification;
-            $specification->setClient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSpecification(Schedule $specification): self
-    {
-        if ($this->specifications->contains($specification)) {
-            $this->specifications->removeElement($specification);
-            // set the owning side to null (unless already changed)
-            if ($specification->getClient() === $this) {
-                $specification->setClient(null);
-            }
         }
 
         return $this;

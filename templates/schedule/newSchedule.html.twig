@@ -3,34 +3,40 @@
 {% block title %}{{ parent() }} - Add {{ class }}{% endblock %}
 
 {% block body %}
-    <div class="form-content">
-        <h2>Add Specification</h2>
+    <div class="form-content form-group">
+        <h2>Add a schedule</h2>
         <br>
         {{ form_start(form) }}
             <div class="row">
                 <div class="col-md-5 form-group">
-                    {{ form_widget(form.client, {'attr' :
-                        {
-                            'class' : 'form-input',
-                            'placeholder' : 'Name'
-                        }
-                    })
+                    {{ form_label(form.datalist.client) }}
+                    <br>
+                    {{ form_widget(form.datalist.client, {'attr' :
+                            {
+                                'class' : 'form-input',
+                                'placeholder' : 'Name'
+                            }
+                        })
                     }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-5 form-group">
-                    {{ form_widget(form.device, {'attr' :
-                        {
-                            'class' : 'form-input',
-                            'placeholder' : 'Name'
-                        }
-                    })
+                    {{ form_label(form.datalist.device) }}
+                    <br>
+                    {{ form_widget(form.datalist.device, {'attr' :
+                            {
+                                'class' : 'form-input',
+                                'placeholder' : 'Name'
+                            }
+                        })
                     }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-5 form-group">
+                    {{ form_label(form.recurrence) }}
+                    <br>
                     {{ form_widget(form.recurrence, {'attr' :
                             {
                                 'class' : 'form-input',

@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Entity\Datalist;
 use App\Entity\Device;
 use App\Entity\LdapUser;
 use App\Entity\Schedule;
+use App\Form\ScheduleType;
 use App\Manager\ClientManager;
+use App\Manager\DatalistManager;
 use App\Manager\ScheduleManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -20,11 +23,13 @@ class ScheduleController extends Controller
 {
     private $schedManager;
     private $clientManager;
+    private $datalistManager;
 
-    public function __construct(ScheduleManager $schedManager, ClientManager $clientManager)
+    public function __construct(ScheduleManager $schedManager, ClientManager $clientManager, DatalistManager $datalistManager)
     {
         $this->schedManager = $schedManager;
         $this->clientManager = $clientManager;
+        $this->datalistManager = $datalistManager;
     }
     /**
      * @Route("/schedule", name="schedule")
@@ -38,36 +43,27 @@ class ScheduleController extends Controller
 
     public function new(Request $request)
     {
-        $specification = new Schedule();
+        $schedule = new Schedule();
+        $datalist = new Datalist();
+        $schedule->setDatalist($datalist);
         $user = $this->getUser();
         $clients = $user->getClients();
         $devices = $user->getDevices();
-        $form = $this->createFormBuilder($specification)
-            ->add('client', EntityType::class, array(
-                'class' => Client::class,
-                'choices' => $clients,
-                'choice_label' => 'hostname'
-            ))
-            ->add('device', EntityType::class, array(
-                'class' => Device::class,
-                'choices' => $devices,
-                'choice_label' => 'type'
-            ))
-            ->add('recurrence', ChoiceType::class, array(
-                'choices' => array(
-                    'Daily' => 'DAILY',
-                    'Weekly' => 'WEEKLY'
-                )
-            ))
-            ->add('save', SubmitType::class, array('label' => 'Create Schedule'))
-            ->getForm();
+        $form = $this->createForm(ScheduleType::class, $schedule,array(
+            'allow_extra_fields' => true,
+            'clients' => $clients,
+            'devices' => $devices
+        ));
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $schedule = $form->getData();
+            $datalist = $this->datalistManager->getDatalist($schedule->getDatalist(),$user);
 
-            $this->schedManager->addScheduleForUser($schedule,$user);
+
+
+            $this->schedManager->saveScheduleForUser($schedule,$user);
 
             return $this->redirectToRoute('portal_home');
         }

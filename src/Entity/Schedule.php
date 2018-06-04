@@ -22,22 +22,10 @@ class Schedule
     private $recurrence;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="schedules")
+     * @ORM\OneToOne(targetEntity="App\Entity\Datalist", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $client;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\LdapUser", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Device", inversedBy="schedules")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $device;
+    private $datalist;
 
     public function getId()
     {
@@ -56,39 +44,17 @@ class Schedule
         return $this;
     }
 
-    public function getClient(): ?Client
+    public function getDatalist(): ?Datalist
     {
-        return $this->client;
+        return $this->datalist;
     }
 
-    public function setClient(?Client $client): self
+    public function setDatalist(Datalist $datalist): self
     {
-        $this->client = $client;
+        $this->datalist = $datalist;
 
         return $this;
     }
 
-    public function getUser(): ?LdapUser
-    {
-        return $this->user;
-    }
-
-    public function setUser(?LdapUser $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getDevice(): ?Device
-    {
-        return $this->device;
-    }
-
-    public function setDevice(?Device $device): self
-    {
-        $this->device = $device;
-
-        return $this;
-    }
+   
 }
