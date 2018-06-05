@@ -39,10 +39,6 @@ class Datalist
      */
     private $device;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
-    private $type;
 
     public function __construct(Client $client = null, Device $device=null, LdapUser $user = null)
     {
@@ -117,18 +113,6 @@ class Datalist
     public function setDevice(?Device $device): self
     {
         $this->device = $device;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }

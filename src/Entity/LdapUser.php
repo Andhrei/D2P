@@ -327,6 +327,19 @@ class LdapUser implements UserInterface, EquatableInterface, \Serializable
         return null;
     }
 
+    public function getLocalDevice()
+    {
+        foreach ($this->devices as $device)
+        {
+            if($device->getType() == "Local")
+            {
+                return $device;
+            }
+        }
+
+        return null;
+    }
+
     public function addDevice(Device $device): self
     {
         if (!$this->devices->contains($device)) {

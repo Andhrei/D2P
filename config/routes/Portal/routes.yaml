@@ -35,6 +35,10 @@ portal_backup:
     path: /backup
     controller: 'App\Controller\DatalistController::backup'
 
-portal_azure_backup:
-    path: /backup/{id}
+portal_backup_azure:
+    path: /backup/azure/{id}
     controller: 'App\Controller\DatalistController::backupAzure'
+
+portal_backup_local:
+    path: /backup/local/{id}
+    controller: 'App\Controller\DatalistController::backupLocal'

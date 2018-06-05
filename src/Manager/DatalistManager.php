@@ -49,6 +49,9 @@ class DatalistManager extends BaseManager
         if (!$datalist) {
             $datalist = new Datalist($client,$device,$user);
 
+            $proc = new Process("omnicreatedl -datalist ".$datalist->getName()." -host ".$client->getHostname()." -device ".$device->getName());
+            $proc->run();
+
             $this->save($datalist);
         }
 

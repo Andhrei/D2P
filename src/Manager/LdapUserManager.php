@@ -37,6 +37,7 @@ class LdapUserManager extends BaseManager
         $user = new LdapUser($entry);
         $this->save($user);
         $this->devManager->createAzureDeviceForUser($user);
+        $this->devManager->createLocalDeviceForUser($user);
 
         return $user;
     }

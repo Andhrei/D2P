@@ -73,4 +73,17 @@ class DatalistController extends Controller
 
         return $this->redirectToRoute('portal_home');
     }
+
+    public function backupLocal($id)
+    {
+        $client = $this->clientManager->find($id);
+        $user = $this->getUser();
+        $localdevice = $user->getLocalDevice();
+
+        $datalist = $this->datalistManager->getOrCreate($client, $localdevice, $user);
+
+        $this->datalistManager->backup($datalist);
+
+        return $this->redirectToRoute('portal_home');
+    }
 }

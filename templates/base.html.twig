@@ -21,20 +21,28 @@
 
                 <div class="collapse navbar-collapse" id="navbar">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_home' %}active{% endif %}">
                             <a class="nav-link" href="{{ path('portal_home') }}">
                                 Home
-                                <span class="sr-only">(current)</span>
+                                {% if app.request.attributes.get('_route') == 'portal_home' %}
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_clients' %}active{% endif %}">
                             <a class="nav-link" href="{{ path('portal_clients') }}">
                                 Clients
+                                {% if app.request.attributes.get('_route') == 'portal_clients' %}
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_schedule_new' %}active{% endif %}">
                             <a class="nav-link" href="{{ path('portal_schedule_new') }}">
                                 Schedule
+                                {% if app.request.attributes.get('_route') == 'portal_schedule_new' %}
+                                    <span class="sr-only">(current)</span>
+                                {% endif %}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -64,6 +72,7 @@
                 </a>
             </nav>
         </header>
+
         {% endblock %}
         <div id="content">
             {% block body %}{% endblock %}

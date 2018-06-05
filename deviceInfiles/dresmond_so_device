@@ -1,0 +1,10 @@
+NAME "dresmond_gw_so"
+DESCRIPTION ""
+HOST dataprotector.datacenter.local
+POLICY BackupToDisk
+TYPE StoreOnceSoftware
+POOL "dresmond_somp"
+LIBRARY "dresmond_so"
+VERIFY
+RESTOREDEVICEPOOL YES
+COPYDEVICEPOOL YES

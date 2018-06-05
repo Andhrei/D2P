@@ -1,0 +1,10 @@
+NAME "dresmond_gw_az"
+DESCRIPTION ""
+HOST dataprotector.datacenter.local
+POLICY BackupToDisk
+TYPE CloudAzure
+POOL "dresmond_mp"
+LIBRARY "dresmond_az"
+VERIFY
+RESTOREDEVICEPOOL YES
+COPYDEVICEPOOL YES

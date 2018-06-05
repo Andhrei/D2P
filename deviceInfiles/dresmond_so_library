@@ -1,0 +1,7 @@
+NAME "dresmond_so"
+DESCRIPTION ""
+POLICY BackupToDisk
+TYPE StoreOnceSoftware
+DIRECTORY
+	"\\dataprotector.datacenter.local\D2P"
+MGMTCONSOLEURL ""

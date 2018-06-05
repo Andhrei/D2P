@@ -94,6 +94,76 @@ class DeviceManager extends BaseManager
         return $device;
     }
 
+    public function createLocalDeviceForUser(LdapUser $user) {
+        $soStore = $user->getUsername().'_sos';
+        $libraryName = $user->getUsername()."_so";
+        $directory = '\\\\dataprotector.datacenter.local\D2P';
+        $deviceName = $user->getUsername()."_gw_so";
+        $mediaPool = $user->getUsername()."_somp";
+
+        /*  user's StoreOnce store */
+        $cmd= 'storeoncesoftware --create_store --name=Store_'.$soStore.' --store_description="Data Protector Store"';
+        dump($cmd);
+        $proc = new Process('storeoncesoftware --create_store --name=Store_'.$soStore.' --store_description="Data Protector Store"');
+        $proc->start();
+
+
+
+        /*  user's StoreOnce library */
+        $file = '../deviceInfiles/'.$user->getUsername().'_so_library';
+        $filesystem = new Filesystem();
+        $filesystem->touch($file);
+        $filesystem->dumpFile($file,'');
+        $filesystem->appendToFile($file,"NAME \"$libraryName\"\xA");
+        $filesystem->appendToFile($file,"DESCRIPTION \"\"\xA");
+        $filesystem->appendToFile($file,"POLICY BackupToDisk\xA");
+        $filesystem->appendToFile($file,"TYPE StoreOnceSoftware\xA");
+        $filesystem->appendToFile($file,"DIRECTORY\xA");
+        $filesystem->appendToFile($file,"\t\"$directory\"\xA");
+        $filesystem->appendToFile($file,"MGMTCONSOLEURL \"\"\xA");
+
+        $cmd="omniupload -create_library ".$file;
+        dump($cmd);
+        $process = new Process($cmd);
+        $process->run();
+
+        /*  user's StoreOnce media pool */
+        $cmd = "omnimm -create_pool ".$mediaPool." \"StoreOnce software deduplication\" App+Loose 0 0";
+        dump($cmd);
+        $process = new Process($cmd);
+        $process->run();
+
+        /*  user's StoreOnce device */
+        $file = '../deviceInfiles/'.$user->getUsername().'_so_device';
+        $filesystem->touch($file);
+        $filesystem->dumpFile($file,'');
+        $filesystem->appendToFile($file,"NAME \"$deviceName\"\xA");
+        $filesystem->appendToFile($file,"DESCRIPTION \"\"\xA");
+        $filesystem->appendToFile($file,"HOST dataprotector.datacenter.local\xA");
+        $filesystem->appendToFile($file,"POLICY BackupToDisk\xA");
+        $filesystem->appendToFile($file,"TYPE StoreOnceSoftware\xA");
+        $filesystem->appendToFile($file,"POOL \"$mediaPool\"\xA");
+        $filesystem->appendToFile($file,"LIBRARY \"$libraryName\"\xA");
+        $filesystem->appendToFile($file,"VERIFY\xA");
+        $filesystem->appendToFile($file,"RESTOREDEVICEPOOL YES\xA");
+        $filesystem->appendToFile($file,"COPYDEVICEPOOL YES\xA");
+
+        $cmd = "omniupload -create_device ".$file;
+        dump($cmd);
+        $process = new Process($cmd);
+        $process->run();
+
+        $device = new Device();
+        $device->setName($deviceName);
+        $device->setLibrary($libraryName);
+        $device->setType("Local");
+        $device->setUser($user);
+
+        $this->save($device);
+
+        return $device;
+    }
+
     public function addDeviceForUser(Device $device,string $type, LdapUser $user)
     {
         $file = '../deviceInfiles/'.$user->getUsername().'_'.$type.' library';
