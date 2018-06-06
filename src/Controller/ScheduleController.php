@@ -59,12 +59,13 @@ class ScheduleController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $schedule = $form->getData();
-
-            $datalist = $this->datalistManager->getDatalist($schedule->getDatalist(),$user);
+            $datalist = $this->datalistManager->getOrCreate($datalist->getClient(),$datalist->getDevice(),$user);
             $schedule->setDatalist($datalist);
             $schedule->setName($datalist->getName()."_".$schedule->getRecurrence());
 
-            $this->schedManager->saveSchedule($schedule);
+
+            $this->schedManager->save($schedule);
+            $this->schedManager->schedule($schedule);
 
             return $this->redirectToRoute('portal_home');
         }

@@ -46,6 +46,7 @@ class DatalistManager extends BaseManager
             'user' => $user
         ));
 
+
         if (!$datalist) {
             $datalist = new Datalist($client,$device,$user);
 
@@ -83,6 +84,7 @@ class DatalistManager extends BaseManager
     }
 
     public function backup(Datalist $datalist) {
+        dump('backikng up '.$datalist->getName());
         $proc = new Process("omnib -datalist ".$datalist->getName()." -mode incremental");
         $proc->start();
 

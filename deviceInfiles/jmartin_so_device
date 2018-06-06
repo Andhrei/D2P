@@ -1,10 +1,9 @@
-NAME "jmartin_gw_so"
+NAME "jmartin_gw_fl"
 DESCRIPTION ""
 HOST dataprotector.datacenter.local
-POLICY BackupToDisk
-TYPE StoreOnceSoftware
-POOL "jmartin_somp"
-LIBRARY "jmartin_so"
-VERIFY
+POLICY Filelibrary
+TYPE File
+POOL "jmartin_flmp"
+LIBRARY "jmartin_fl"
 RESTOREDEVICEPOOL YES
 COPYDEVICEPOOL YES

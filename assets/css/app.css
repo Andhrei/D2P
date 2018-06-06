@@ -1,7 +1,14 @@
-#content {
-    position: absolute;
-    width: 100%;
+.base-content {
+    position: relative;
+    margin-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1200px;
     height: 100%;
+}
+
+nav.base-content {
+    width: 500px;
 }
 
 .form-content {

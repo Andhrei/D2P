@@ -4,11 +4,60 @@
 
 {% block body %}
     {% if datalists is empty %}
+        <br>
         <h2>You have no backups!</h2>
     {% else %}
-        {%  for datalist in datalists %}
-            {{ datalist.name }}
-        {% endfor %}
+
+        <br>
+        <h2>Your backups!</h2>
+        <div class="accordion" id="client-accordion">
+            {% for datalist in datalists %}
+                <div class="card">
+                    <div class="card-header" id="heading-{{ datalist.name }}">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ datalist.name }}" aria-expanded="false" aria-controls="collapse-{{ datalist.name }}">
+                                {{ datalist.client.name }} to {{ datalist.device.type }} storage
+                            </button>
+                        </h5>
+                    </div>
+                </div>
+
+                <div id="collapse-{{ datalist.name }}" class="collapse" aria-labelledby="heading-{{ datalist.name }}" data-parent="#client-accordion">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for session in datalist.sessions %}
+                                <tr class="table-{% if session.status == "Completed" %}success{% elseif session.status == "Failed" or "Aborted"  %}danger{% else %}warning{% endif %}">
+                                    <th>{{ session.date }}</th>
+                                    <th>{{ session.type }}</th>
+                                    <th>{{ session.status }}</th>
+                                    <th>
+                                        <div class="btn-group" role="group">
+                                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Restore
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                <a class="dropdown-item" href="{{ path('portal_restore', { 'sessionId' : session.id }) }}">Full</a>
+                                                <a class="dropdown-item" href="#">Files</a>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 
 {% endblock %}

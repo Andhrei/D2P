@@ -32,11 +32,18 @@ class ScheduleManager extends BaseManager
         // TODO: Implement filterBy() method.
     }
 
-    public function saveSchedule(Schedule $schedule)
+    public function schedule(Schedule $schedule)
     {
-        $this->save($schedule);
 
-        $proc = new Process("omnidbutil -create_schedule -specType BACKUP -appType datalist -specName ".$schedule->getDatalist()->getName()." -dpName ".$schedule->getName()." -dpType incr -recurrenceType ".$schedule->getRecurrence()." -everyNth 1 -startDate ".date("Y-m-d")." -startTime 12:00");
+        if($schedule->getRecurrence() == "DAILY")
+        {
+            $cmd = ("omnidbutil -create_schedule -specType BACKUP -appType datalist -specName ".$schedule->getDatalist()->getName()." -dpName ".$schedule->getName()." -dpType incr -recurrenceType ".$schedule->getRecurrence()." -everyNth 1 -startDate ".date("Y-m-d")." -startTime 12:00");
+        } else {
+            $cmd = ("omnidbutil -create_schedule -specType BACKUP -appType datalist -specName ".$schedule->getDatalist()->getName()." -dpName ".$schedule->getName()." -dpType incr -recurrenceType ".$schedule->getRecurrence()." -everyNth 1 -daysOfWeek 1 -startDate ".date("Y-m-d")." -startTime 12:00");
+        }
+
+        dump($cmd);
+        $proc = new Process($cmd);
         $proc->run();
 
     }

@@ -39,8 +39,10 @@ class Datalist
      */
     private $device;
 
+    private $sessions;
 
-    public function __construct(Client $client = null, Device $device=null, LdapUser $user = null)
+
+    public function __construct(Client $client = null, Device $device = null, LdapUser $user = null)
     {
         if ($client) {
             $this->client = $client;
@@ -58,6 +60,7 @@ class Datalist
             $this->generateName();
         }
     }
+
 
     public function getId()
     {
@@ -78,7 +81,7 @@ class Datalist
 
     public function generateName()
     {
-        return $this->name = $this->device->getLibrary()."_".$this->client->getShortName();
+        return $this->name = $this->device->getLibrary() . "_" . $this->client->getShortName();
     }
 
     public function getClient(): ?Client
@@ -115,5 +118,22 @@ class Datalist
         $this->device = $device;
 
         return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getSessions()
+    {
+        return $this->sessions;
+    }
+
+    /**
+     * @param mixed $sessions
+     */
+    public function setSessions($sessions): void
+    {
+        $this->sessions = $sessions;
     }
 }

@@ -19,43 +19,45 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbar">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_home' %}active{% endif %}">
-                            <a class="nav-link" href="{{ path('portal_home') }}">
-                                Home
-                                {% if app.request.attributes.get('_route') == 'portal_home' %}
-                                    <span class="sr-only">(current)</span>
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_clients' %}active{% endif %}">
-                            <a class="nav-link" href="{{ path('portal_clients') }}">
-                                Clients
-                                {% if app.request.attributes.get('_route') == 'portal_clients' %}
-                                    <span class="sr-only">(current)</span>
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_schedule_new' %}active{% endif %}">
-                            <a class="nav-link" href="{{ path('portal_schedule_new') }}">
-                                Schedule
-                                {% if app.request.attributes.get('_route') == 'portal_schedule_new' %}
-                                    <span class="sr-only">(current)</span>
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('portal_backup') }}">
-                                Backup
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Restore
-                            </a>
-                        </li>
-                    </ul>
+                <div class="base-content">
+                    <div class="collapse navbar-collapse" id="navbar">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_home' %}active{% endif %}">
+                                <a class="nav-link" href="{{ path('portal_home') }}">
+                                    Home
+                                    {% if app.request.attributes.get('_route') == 'portal_home' %}
+                                        <span class="sr-only">(current)</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                            <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_clients' %}active{% endif %}">
+                                <a class="nav-link" href="{{ path('portal_clients') }}">
+                                    Clients
+                                    {% if app.request.attributes.get('_route') == 'portal_clients' %}
+                                        <span class="sr-only">(current)</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                            <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_schedule_new' %}active{% endif %}">
+                                <a class="nav-link" href="{{ path('portal_schedule_new') }}">
+                                    Schedule
+                                    {% if app.request.attributes.get('_route') == 'portal_schedule_new' %}
+                                        <span class="sr-only">(current)</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('portal_backup') }}">
+                                    Backup
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    Restore
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div id="welcomeUser" class="navbar" >
@@ -74,7 +76,7 @@
         </header>
 
         {% endblock %}
-        <div id="content">
+        <div class="base-content">
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}

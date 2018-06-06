@@ -2,6 +2,10 @@ portal_home:
     path: /home
     controller: 'App\Controller\PortalController::index'
 
+portal_restore:
+    path: /restore/{sessionId}
+    controller: 'App\Controller\PortalController::restore'
+
 portal_login:
     path: /login
     controller: 'App\Controller\SecurityController::login'

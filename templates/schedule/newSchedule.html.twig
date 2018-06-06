@@ -7,6 +7,12 @@
         <h2>Add a schedule</h2>
         <br>
         {{ form_start(form) }}
+        {{ form_row(form._token) }}
+        {% if not form.vars.valid %}
+            <div class="alert alert-danger">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
             <div class="row">
                 <div class="col-md-5 form-group">
                     {{ form_label(form.datalist.client) }}
