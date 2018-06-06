@@ -22,7 +22,7 @@ security:
 #                service: Symfony\Component\Ldap\Ldap
 #                base_dn: 'CN=users,DC=datacenter,DC=local'
 #                search_dn: 'CN=Administrator,CN=users,DC=datacenter,DC=local'
-#                search_password: 'P@ssword1234'
+#                search_password: 'P@ssword'
 #                default_roles: ROLE_USER
 #
 #        in_memory:

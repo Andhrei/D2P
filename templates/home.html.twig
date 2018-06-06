@@ -3,8 +3,12 @@
 {% block title %}{{ parent() }} - Home{% endblock %}
 
 {% block body %}
-
-
-
+    {% if datalists is empty %}
+        <h2>You have no backups!</h2>
+    {% else %}
+        {%  for datalist in datalists %}
+            {{ datalist.name }}
+        {% endfor %}
+    {% endif %}
 
 {% endblock %}

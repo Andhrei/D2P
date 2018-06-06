@@ -43,7 +43,7 @@ class DeviceManager extends BaseManager
         $mediaPool = $user->getUsername()."_mp";
 
         $azureContainer = '\\\\azstrg1.blob.core.windows.net\d2p';
-        $cloudOption  = 'T9zxEb2ybDv86kifY0i48Gdes1JFqg4pSa2y3UZKlW3tViKrytb6XcpomiWEJaHhsX1gZ78xCxNTw8UfJCVD0uwZ5Xciy9BJtabFQmkFt6OtEluW4nXSG8ehm/E0jNz9c145bYX2O+VrGryIpfHrlMPxb5j4TSZ5J89yzqBOCVDEm2ynFif9P81jluvbSfAlMHpbzgm6r9BwMNwGeuj/xyRW1fB5azrJshW+eXOrhI3SmsUDho6NTZ3e4g+9NfB0pn8VSVXJzz7QTfWUIFEzpxEcFL5NoCao6Vqd589MLzod3y4LWT7JoWih4m10l6HedNGDqUyhZFVuFw==';
+        $cloudOption  = 'Gv7lS9VKzANkV/PDcY5QhyJjFCzXV3QJ5FfqkCLetJAdJixJDbKc7OwsGKf+Qt57PQzXgXWPhn5hGqxkHPhqpqWd/98Rpd+bToaQKDa0ODQeKuAshn01RUva9N7L30T4C8t60R8d1tvCWrKVYF2PEYCdfcaj2hya2LliKJ4z/cYgSBYwt3ssdr8q3Mkj4I1bXgg6CiuYICn8ZIdPG1NE7m/R3dg+8Uv8UVyQThWEaJEX56uWKHeClTZkIWdeEFTx7JQszGdGzeVu5MAvBImUhhUEHWjoKa21aEKDXCSS5xGuYWheW2TN4dhjuI8iESUCx5k2S9f0zfJoSw==';
 
         $file = '../deviceInfiles/'.$user->getUsername().'_az_library';
         $filesystem = new Filesystem();
