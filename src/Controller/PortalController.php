@@ -55,16 +55,9 @@ class PortalController extends BaseController
         $username = $user->getDisplayName() ? $user->getDisplayName() : $user->getUsername();
         $request->getSession()->set('userName', $username);
 
-        // get user's datalist
-        $datalists = $user->getDatalists();
-
-        $sessions = new ArrayCollection();
-        foreach ($datalists as $datalist) {
-            $datalist->setSessions($this->getSessions($datalist));
-        }
 
         $content = $this->renderView('home.html.twig', array(
-            'datalists' => $datalists,
+
         ));
 
         return new Response($content);

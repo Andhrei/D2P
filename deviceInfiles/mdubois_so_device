@@ -1,10 +1,9 @@
-NAME "mdubois_gw_so"
+NAME "mdubois_gw_fl"
 DESCRIPTION ""
 HOST dataprotector.datacenter.local
-POLICY BackupToDisk
-TYPE StoreOnceSoftware
-POOL "mdubois_somp"
-LIBRARY "mdubois_so"
-VERIFY
+POLICY Filelibrary
+TYPE File
+POOL "mdubois_flmp"
+LIBRARY "mdubois_fl"
 RESTOREDEVICEPOOL YES
 COPYDEVICEPOOL YES

@@ -1,10 +1,6 @@
 portal_home:
     path: /home
-    controller: 'App\Controller\PortalController::index'
-
-portal_restore:
-    path: /restore/{sessionId}
-    controller: 'App\Controller\PortalController::restore'
+    controller: 'App\Controller\RestoreController::index'
 
 portal_login:
     path: /login
@@ -46,3 +42,17 @@ portal_backup_azure:
 portal_backup_local:
     path: /backup/local/{id}
     controller: 'App\Controller\DatalistController::backupLocal'
+
+# Restores
+
+portal_restore:
+    path: /restore
+    controller: 'App\Controller\RestoreController::index'
+
+portal_restore_session:
+    path: /restore/{sessionId}
+    controller: 'App\Controller\RestoreController::restore'
+
+portal_restore_list:
+    path: /restore/list/{sessionId}
+    controller: 'App\Controller\RestoreController::list'

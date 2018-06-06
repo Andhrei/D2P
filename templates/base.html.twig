@@ -46,13 +46,13 @@
                                     {% endif %}
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_backup' %}active{% endif %}" >
                                 <a class="nav-link" href="{{ path('portal_backup') }}">
                                     Backup
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
+                            <li class="nav-item {% if app.request.attributes.get('_route') == 'portal_restore' %}active{% endif %}">
+                                <a class="nav-link " href="{{ path('portal_restore') }}">
                                     Restore
                                 </a>
                             </li>
@@ -77,6 +77,9 @@
 
         {% endblock %}
         <div class="base-content">
+            {% if info is defined %}
+                <div class="alert alert-success" >{{ info }}</div>
+            {% endif %}
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}

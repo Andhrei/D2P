@@ -1,0 +1,8 @@
+NAME "mdubois_fl"
+DESCRIPTION ""
+HOST dataprotector.datacenter.local
+POLICY Filelibrary
+TYPE File
+DIRECTORY
+	"5120 2 0 10 F:\D2P_FileLibrary\mdubois"
+MGMTCONSOLEURL ""
